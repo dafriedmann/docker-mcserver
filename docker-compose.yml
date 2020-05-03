@@ -1,0 +1,9 @@
+version: '3'
+services:
+    minecraft:
+        build: .
+        container_name: minecraft-server
+        environment:
+            - EULA=true
+        ports:
+            - 25565:25565
