@@ -1,17 +1,25 @@
 FROM openjdk:11-jre-slim
-
-WORKDIR /opt/minecraft
-
-RUN apt update && apt install curl -y
+LABEL maintainer="docker@dfriedmann.de"
 
 ENV EULA false
 
-# Download Minecraft
-RUN curl https://launcher.mojang.com/v1/objects/bb2b6b1aefcd70dfd1892149ac3a215f6c636b07/server.jar -o server.jar
+# Add minecraft user
+RUN groupadd -g 1001 minecraft && \
+    useradd -u 1001 -g minecraft minecraft
+RUN mkdir -p /minecraft
+RUN chown -R 1001:1001 /minecraft
 
-# Add entrypoint
-ADD entrypoint.sh .
+USER minecraft
+
+VOLUME ["/minecraft"]
+WORKDIR /minecraft
+
+# Download Minecraft and add entrypoint
+ADD --chown=minecraft:minecraft https://launcher.mojang.com/v1/objects/bb2b6b1aefcd70dfd1892149ac3a215f6c636b07/server.jar .
+COPY --chown=minecraft:minecraft /scripts/entrypoint.sh .
 
 # Start
 EXPOSE 25565
-CMD ["./entrypoint.sh"]
+ENTRYPOINT ["./entrypoint.sh"]
+
+
