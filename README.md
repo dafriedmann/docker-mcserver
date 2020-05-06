@@ -1,5 +1,7 @@
 # Docker Minecraft Server
 
+![Docker Minecraft Server](minecraft_docker.png)
+
 Run minecraft vanilla server in a docker container :whale:.
 
 ## Get started
