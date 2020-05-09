@@ -8,7 +8,7 @@ services:
         ports:
             - 25565:25565
         volumes: 
-            - mcserver-data:/minecraft
+            - mcserver-data:/minecraft/data
 
 volumes:
     mcserver-data:

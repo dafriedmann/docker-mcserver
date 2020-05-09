@@ -4,14 +4,15 @@ LABEL maintainer="docker@dfriedmann.de"
 ENV EULA false
 
 # Add minecraft user
+# Image uses /minecraft for storing the server.jar
+# and /minecraft/data for persistent data
 RUN groupadd -g 1001 minecraft && \
-    useradd -u 1001 -g minecraft minecraft
-RUN mkdir -p /minecraft
-RUN chown -R 1001:1001 /minecraft
+    useradd -u 1001 -g minecraft minecraft && \
+    mkdir /minecraft && \
+    mkdir /minecraft/data && \
+    chown -R 1001:1001 /minecraft
 
 USER minecraft
-
-VOLUME ["/minecraft"]
 WORKDIR /minecraft
 
 # Download Minecraft and add entrypoint
