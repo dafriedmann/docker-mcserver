@@ -1,17 +1,33 @@
 # Docker Minecraft Server
 
-![Docker Minecraft Server](minecraft_docker.png)
+![Docker Minecraft Server](https://raw.githubusercontent.com/dafriedmann/docker-mcserver/master/minecraft_docker.png)
 
-Run minecraft vanilla server in a docker container :whale:.
+Run minecraft vanilla server in a docker container.
 
 ## Get started - quick and easy
-A image can be found under docker hub: [dafriedmann/minecraft-server](https://hub.docker.com/r/dafriedmann/minecraft-server)
-To spin up a server just follow the instructions provided under the dockerhub overview :).
+If you have not already, go ahead and [install docker-compose](https://docs.docker.com/compose/install/).
+Example running image with volume for storing persistent data:
+
+```
+version: '3'
+services:
+    minecraft:
+        image: dafriedmann/minecraft-server
+        container_name: mcserver
+        environment:
+            - EULA=true
+        ports:
+            - 25565:25565
+        volumes: 
+            - mcserver-data:/minecraft/data
+
+volumes:
+    mcserver-data:
+```
 
 ## Build a custom image yourself
 
 In case you want to build an image yourself follow these instructions:
-If you have not already, go ahead and [install docker-compose](https://docs.docker.com/compose/install/).
 
 1. clone the repo
 ```
