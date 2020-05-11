@@ -2,6 +2,8 @@ FROM openjdk:11-jre-slim
 LABEL maintainer="docker@dfriedmann.de"
 
 ENV EULA false
+ENV MAX_MEMORY 1024m
+ENV MIN_MEMORY 1024m
 
 # Add minecraft user
 # Image uses /minecraft for storing the server.jar
