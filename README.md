@@ -49,8 +49,36 @@ you can mount a volume to the server data path (see docker-compose.yml).
 The data path in the container is:
 ``` /minecraft/data ```
 
+## Edit Config files
+
+To edit the config files (e.g. server.properties) one can use a sidecar and
+attach to the mcserver-data volume. First cd into the minecraft folder (where the docker-compose lives) and run one of the following commands.
+
+This will spin up a sidecar to edit the server.properties.
+Use ESC and :q to exit the sidecar which then destroys itself. 
+
+```${PWD##*/}``` is used to get the current dir name. If you are not in the right dir or the volume is named differently you can replace the volume name.
+In order to find out the volume ```docker volume list``` may be useful.
+
+### Edit server.properties
+```
+docker run -it --rm -v ${PWD##*/}_mcserver-data:/minecraft busybox vi /minecraft/server.properties
+```
+### Edit whitelist.json
+```
+docker run -it --rm -v ${PWD##*/}_mcserver-data:/minecraft busybox vi /minecraft/whitelist.json
+```
+
+### Edit ops.json
+```
+docker run -it --rm -v ${PWD##*/}_mcserver-data:/minecraft busybox vi /minecraft/ops.json
+```
+
+**Note: If you changed something in the config you need to restart the mcserver.
+Thus ```docker-compose restart``` can be used.**
+
 ## Increase memory limit
-The default settings for -Xmx and -Xms is 1024m.
+The default settings for -Xmx and -Xms are 1024m.
 If you want to increase the memory simply override the following two environment variables.
 
 example with 2048m:
