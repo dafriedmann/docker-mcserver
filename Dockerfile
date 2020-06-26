@@ -18,7 +18,7 @@ USER minecraft
 WORKDIR /minecraft
 
 # Download Minecraft and add entrypoint
-ADD --chown=minecraft:minecraft https://launcher.mojang.com/v1/objects/bb2b6b1aefcd70dfd1892149ac3a215f6c636b07/server.jar .
+ADD --chown=minecraft:minecraft https://launcher.mojang.com/v1/objects/a412fd69db1f81db3f511c1463fd304675244077/server.jar .
 COPY --chown=minecraft:minecraft /scripts/entrypoint.sh .
 
 # Start
