@@ -4,6 +4,7 @@ LABEL maintainer="docker@dfriedmann.de"
 ENV EULA false
 ENV MAX_MEMORY 1024m
 ENV MIN_MEMORY 1024m
+ENV SERVER_DOWNLOAD_URL https://launcher.mojang.com/v1/objects/c5f6fb23c3876461d46ec380421e42b289789530/server.jar
 
 # Add minecraft user
 # Image uses /minecraft for storing the server.jar
@@ -18,7 +19,7 @@ USER minecraft
 WORKDIR /minecraft
 
 # Download Minecraft and add entrypoint
-ADD --chown=minecraft:minecraft https://launcher.mojang.com/v1/objects/a412fd69db1f81db3f511c1463fd304675244077/server.jar .
+ADD --chown=minecraft:minecraft $SERVER_DOWNLOAD_URL .
 COPY --chown=minecraft:minecraft /scripts/entrypoint.sh .
 
 # Start
