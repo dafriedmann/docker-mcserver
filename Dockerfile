@@ -4,7 +4,7 @@ LABEL maintainer="docker@dfriedmann.de"
 ENV EULA false
 ENV MAX_MEMORY 1024m
 ENV MIN_MEMORY 1024m
-ENV SERVER_DOWNLOAD_URL https://launcher.mojang.com/v1/objects/f02f4473dbf152c23d7d484952121db0b36698cb/server.jar
+ENV SERVER_DOWNLOAD_URL https://launcher.mojang.com/v1/objects/35139deedbd5182953cf1caa23835da59ca3d7cd/server.jar
 
 # Add minecraft user
 # Image uses /minecraft for storing the server.jar
