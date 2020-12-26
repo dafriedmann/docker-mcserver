@@ -10,16 +10,15 @@ ENV MIN_MEMORY 1024m
 # Add minecraft user
 # Image uses /minecraft for storing the server.jar
 # and /minecraft/data for persistent data
-# /etc/minecraft is used for configuration files like server.properties or whitelist.json. 
+# /minecraft/conf is used for configuration files like server.properties or whitelist.json. 
 # All files from this directory will copied to /minecraft/data if they don't alread exist.
 # This allows the user of this image to mount configuration files which still can be modified by minecraft like the whitelist.json
 RUN groupadd -g 1001 minecraft && \
     useradd -u 1001 -g minecraft minecraft && \
     mkdir /minecraft && \
     mkdir /minecraft/data && \
-    mkdir /etc/minecraft && \
-    chown -R 1001:1001 /minecraft && \
-    chown -R 1001:1001 /etc/minecraft
+    mkdir /minecraft/conf && \
+    chown -R 1001:1001 /minecraft
 
 USER minecraft
 WORKDIR /minecraft

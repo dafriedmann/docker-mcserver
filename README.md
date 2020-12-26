@@ -51,7 +51,7 @@ The data path in the container is:
 
 ## Edit Config files
 
-To edit the config files (e.g. server.properties) one can mount them to `/etc/minecraft`. All files in this directory will copied to `/minecraft/data` if they aren't existing there. 
+To edit the config files (e.g. server.properties) one can mount them to `/minecraft/conf`. All files in this directory will copied to `/minecraft/data` if they aren't existing there. 
 
 Alternatively use a sidecar and attach to the mcserver-data volume. First cd into the minecraft folder (where the docker-compose lives) and run one of the following commands.
 
@@ -162,7 +162,7 @@ spec:
             - name: minecraft-data
               mountPath: /minecraft/data:rw
             - name: minecraft-config
-              mountPath: /etc/minecraft
+              mountPath: /minecraft/conf
       volumes:
         - name: minecraft-data
           persistentVolumeClaim:
