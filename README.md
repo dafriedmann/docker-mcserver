@@ -51,8 +51,9 @@ The data path in the container is:
 
 ## Edit Config files
 
-To edit the config files (e.g. server.properties) one can use a sidecar and
-attach to the mcserver-data volume. First cd into the minecraft folder (where the docker-compose lives) and run one of the following commands.
+To edit the config files (e.g. server.properties) one can mount them to `/minecraft/conf`. All files in this directory will copied to `/minecraft/data` if they aren't existing there. 
+
+Alternatively use a sidecar and attach to the mcserver-data volume. First cd into the minecraft folder (where the docker-compose lives) and run one of the following commands.
 
 This will spin up a sidecar to edit the server.properties.
 Use ESC and :q to exit the sidecar which then destroys itself. 
@@ -88,3 +89,7 @@ MIN_MEMORY=2048m
 ```
 When using docker-compose just add them as array elements to the 
 environment section.
+
+--- 
+
+Hint: To find a minecraft user id, one can use: https://namemc.com/

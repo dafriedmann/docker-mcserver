@@ -1,0 +1,72 @@
+name: Update minecraft
+
+on:
+  schedule:
+    - cron: '0 0 * * *'
+  push:
+      
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Download versions manifest
+      uses: wei/curl@v1
+      with:
+        args: -fsSL 'https://launchermeta.mojang.com/mc/game/version_manifest.json' --output version_manifest.json
+    - name: Load verions manifest file
+      id: load-manifest
+      run: |
+          content=`cat version_manifest.json`
+          echo "::set-output name=manifestJson::$content"
+    - name: Read latest release version
+      id: read-version
+      run: |
+        echo "::set-output name=version::${{fromJson(steps.load-manifest.outputs.manifestJson).latest.release}}"
+    - run: "echo Latest version is ${{ steps.read-version.outputs.version }}"
+    - name: Extract server versions manifest from versions manifest
+      uses: sergeysova/jq-action@v2
+      id: minecraft-versions-artifacts-url
+      with:
+        cmd: "jq --arg VERSION '${{ steps.read-version.outputs.version }}' '[.versions[]|select(.id == $VERSION)][0].url' version_manifest.json -r"
+    
+    - name: Download version artifacts manifest
+      uses: wei/curl@v1
+      with:
+        args: -fsSL '${{ steps.minecraft-versions-artifacts-url.outputs.value }}' --output version_artifacts.json
+    - name: Load verion artifacts manifest file
+      id: load-version_artifacts
+      run: |
+          content=`cat version_artifacts.json`
+          echo "::set-output name=versionArtifactsJson::$content"
+    - name: Read server jar download url
+      id: minecraft-server-url
+      run: |
+        echo "::set-output name=url::${{fromJson(steps.load-version_artifacts.outputs.versionArtifactsJson).downloads.server.url}}"
+    - run: "echo Server url is ${{ steps.minecraft-server-url.outputs.url }}"
+      
+    - name: Set up QEMU
+      uses: docker/setup-qemu-action@v1
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1
+    - name: Login to DockerHub
+      uses: docker/login-action@v1 
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+    - name: Check if image exist
+      id: is_image_exist
+      uses: tm-bverret/docker-exist-action@v1.1.1
+      with:
+        registry: docker.io
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+        image: ${{ secrets.DOCKERHUB_USERNAME }}/minecraft-server:${{ steps.read-version.outputs.version }}
+    - name: Build and push if image not exists
+      if: ((!steps.is_image_exist.outputs.image_exist))
+      id: docker_build
+      uses: docker/build-push-action@v2
+      with:
+        push: true
+        tags: ${{ secrets.DOCKERHUB_USERNAME }}/minecraft-server:latest, ${{ secrets.DOCKERHUB_USERNAME }}/minecraft-server:${{ steps.read-version.outputs.version }}
+        build-args: |
+          SERVER_URL=${{ steps.minecraft-server-url.outputs.url }}
