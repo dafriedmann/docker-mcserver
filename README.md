@@ -90,6 +90,9 @@ MIN_MEMORY=2048m
 When using docker-compose just add them as array elements to the 
 environment section.
 
---- 
+## Run with kubernetes
 
+For an kubernetes example see: [Kubernetes Example]](.github/k8s-example.md)
+
+---
 Hint: To find a minecraft user id, one can use: https://namemc.com/
