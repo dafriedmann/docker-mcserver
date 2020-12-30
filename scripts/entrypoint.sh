@@ -1,9 +1,11 @@
 #!/bin/bash
+#cd /minecraft/data
 #Copies all non existing confi files to the data folder
 
-
-if [ "$(ls -A '/minecraft/conf')" ]; then
-	cp -n /minecraft/conf/* .
+# Check if directory exists and if files are present
+if ! ls -1qA $DIR | grep -q . ; then
+        echo "Copying files from /minecraft/conf/ ..."
+        cp -n /minecraft/conf/* .
 fi
 
 echo "eula=$EULA" >> eula.txt
