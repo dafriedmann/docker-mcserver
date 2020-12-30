@@ -1,10 +1,10 @@
 #!/bin/bash
-#cd /minecraft/data
-#Copies all non existing confi files to the data folder
+cd /minecraft/data
 
 # Check if directory exists and if files are present
 if ! ls -1qA $DIR | grep -q . ; then
-        echo "Copying files from /minecraft/conf/ ..."
+        echo "Copying files from /minecraft/conf/ to /minecraft/data"
+	# Copy all not already existing config files to the data folder
         cp -n /minecraft/conf/* .
 fi
 
